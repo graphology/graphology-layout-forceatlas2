@@ -4,6 +4,7 @@
   "description": "ForceAtlas 2 layout algorithm for graphology.",
   "main": "index.js",
   "files": [
+    "helpers.js",
     "index.js",
     "iterate.js"
   ],
@@ -38,7 +39,10 @@
     "mocha": "^3.0.2"
   },
   "eslintConfig": {
-    "extends": "@yomguithereal/eslint-config"
+    "extends": "@yomguithereal/eslint-config",
+    "globals": {
+      "Float32Array": true
+    }
   },
   "dependencies": {
     "graphology-utils": "^1.1.1"

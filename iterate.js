@@ -49,6 +49,7 @@ var MAX_FORCE = 10;
  * @param  {object}       options    - Layout options.
  * @param  {Float32Array} NodeMatrix - Node data.
  * @param  {Float32Array} EdgeMatrix - Edge data.
+ * @return {object}                  - Some metadata.
  */
 module.exports = function(options, NodeMatrix, EdgeMatrix) {
 

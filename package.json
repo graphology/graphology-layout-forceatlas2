@@ -1,0 +1,46 @@
+{
+  "name": "graphology-layout-forceatlas2",
+  "version": "0.0.1",
+  "description": "ForceAtlas 2 layout algorithm for graphology.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "iterate.js"
+  ],
+  "scripts": {
+    "lint": "eslint *.js",
+    "prepublish": "npm run lint && npm test",
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graphology/graphology-forceatlas2.git"
+  },
+  "keywords": [
+    "graph",
+    "graphology",
+    "layout",
+    "force atlas"
+  ],
+  "author": {
+    "name": "Guillaume Plique",
+    "url": "http://github.com/Yomguithereal"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/graphology/graphology-forceatlas2/issues"
+  },
+  "homepage": "https://github.com/graphology/graphology-forceatlas2#readme",
+  "devDependencies": {
+    "@yomguithereal/eslint-config": "^3.0.0",
+    "eslint": "^3.5.0",
+    "graphology": "0.4.0",
+    "mocha": "^3.0.2"
+  },
+  "eslintConfig": {
+    "extends": "@yomguithereal/eslint-config"
+  },
+  "dependencies": {
+    "graphology-utils": "^1.1.1"
+  }
+}

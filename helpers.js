@@ -12,6 +12,62 @@ var PPN = 10,
     PPE = 3;
 
 /**
+ * Function used to validate the given settings.
+ *
+ * @param  {object}      settings - Settings to validate.
+ * @return {object|null}
+ */
+exports.validateSettings = function(settings) {
+
+  if ('linLogMode' in settings &&
+      typeof settings.linLogMode !== 'boolean')
+    return {message: 'the `linLogMode` setting should be a boolean.'};
+
+  if ('outboundAttractionDistribution' in settings &&
+      typeof settings.outboundAttractionDistribution !== 'boolean')
+    return {message: 'the `outboundAttractionDistribution` setting should be a boolean.'};
+
+  if ('adjustSizes' in settings &&
+      typeof settings.adjustSizes !== 'boolean')
+    return {message: 'the `adjustSizes` setting should be a boolean.'};
+
+  if ('edgeWeightInfluence' in settings &&
+      typeof settings.edgeWeightInfluence !== 'number' &&
+      settings.edgeWeightInfluence < 0)
+    return {message: 'the `edgeWeightInfluence` setting should be a number >= 0.'};
+
+  if ('scalingRatio' in settings &&
+      typeof settings.scalingRatio !== 'number' &&
+      settings.scalingRatio < 0)
+    return {message: 'the `scalingRatio` setting should be a number >= 0.'};
+
+  if ('strongGravityMode' in settings &&
+      typeof settings.strongGravityMode !== 'boolean')
+    return {message: 'the `strongGravityMode` setting should be a boolean.'};
+
+  if ('gravity' in settings &&
+      typeof settings.gravity !== 'number' &&
+      settings.gravity < 0)
+    return {message: 'the `gravity` setting should be a number >= 0.'};
+
+  if ('slowDown' in settings &&
+      typeof settings.slowDown !== 'number' &&
+      settings.slowDown < 0)
+    return {message: 'the `slowDown` setting should be a number >= 0.'};
+
+  if ('barnesHutOptimize' in settings &&
+      typeof settings.barnesHutOptimize !== 'boolean')
+    return {message: 'the `barnesHutOptimize` setting should be a boolean.'};
+
+  if ('barnesHutTheta' in settings &&
+      typeof settings.barnesHutTheta !== 'number' &&
+      settings.barnesHutTheta < 0)
+    return {message: 'the `barnesHutTheta` setting should be a number >= 0.'};
+
+  return null;
+};
+
+/**
  * Function generating a flat matrix for both nodes & edges of the given graph.
  *
  * @param  {Graph}  graph - Target graph.

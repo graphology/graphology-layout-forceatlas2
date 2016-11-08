@@ -64,3 +64,42 @@ exports.graphToByteArrays = function(graph) {
     edges: EdgeMatrix
   };
 };
+
+/**
+ * Function applying the layout back to the graph.
+ *
+ * @param {Graph}        graph      - Target graph.
+ * @param {Float32Array} NodeMatrix - Node matrix.
+ */
+exports.applyLayoutChanges = function(graph, NodeMatrix) {
+  var nodes = graph.nodes();
+
+  for (var i = 0, j = 0, l = NodeMatrix.length; i < l; i += PPN) {
+    graph.setNodeAttribute(nodes[j], 'x', NodeMatrix[i]);
+    graph.setNodeAttribute(nodes[j], 'y', NodeMatrix[i + 1]);
+    j++;
+  }
+};
+
+/**
+ * Function collecting the layout positions.
+ *
+ * @param  {Graph}        graph      - Target graph.
+ * @param  {Float32Array} NodeMatrix - Node matrix.
+ * @return {object}                  - Map to node positions.
+ */
+exports.collectLayoutChanges = function(graph, NodeMatrix) {
+  var nodes = graph.nodes(),
+      positions = Object.create(null);
+
+  for (var i = 0, j = 0, l = NodeMatrix.length; i < l; i += PPN) {
+    positions[nodes[j]] = {
+      x: NodeMatrix[i],
+      y: NodeMatrix[i + 1]
+    };
+
+    j++;
+  }
+
+  return positions;
+};

@@ -20,3 +20,7 @@ var DEFAULT_SETTINGS = {
   barnesHutOptimize: false,
   barnesHutTheta: 0.5
 };
+
+/**
+ * Asbtract function used to run a certain number of iterations.
+ */

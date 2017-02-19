@@ -51,7 +51,7 @@ var MAX_FORCE = 10;
  * @param  {Float32Array} EdgeMatrix - Edge data.
  * @return {object}                  - Some metadata.
  */
-module.exports = function(options, NodeMatrix, EdgeMatrix) {
+module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
   // Initializing variables
   var l, r, n, n1, n2, e, w, g;

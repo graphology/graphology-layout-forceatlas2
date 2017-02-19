@@ -5,7 +5,8 @@
 var assert = require('assert'),
     Graph = require('graphology');
 
-var helpers = require('./helpers.js');
+var helpers = require('./helpers.js'),
+    layout = require('./index.js');
 
 describe('graphology-layout-forceatlas2', function() {
 
@@ -125,6 +126,32 @@ describe('graphology-layout-forceatlas2', function() {
           Ada: {x: 24, y: -1}
         });
       });
+    });
+  });
+
+  describe('synchronous', function() {
+
+    it('should throw if the graph is invalid.', function() {
+      assert.throws(function() {
+        layout(null);
+      }, /graphology/);
+    });
+
+    it('should throw if iterations are not valid.', function() {
+      assert.throws(function() {
+        layout(new Graph(), {});
+      }, /number/);
+
+      assert.throws(function() {
+        layout(new Graph(), -34);
+      }, /positive/);
+    });
+
+    it('should throw if settings are invalid.', function() {
+
+      assert.throws(function() {
+        layout(new Graph(), {iterations: 5, settings: {linLogMode: 45}});
+      }, /linLogMode/);
     });
   });
 });

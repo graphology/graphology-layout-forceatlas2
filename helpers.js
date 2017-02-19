@@ -12,6 +12,32 @@ var PPN = 10,
     PPE = 3;
 
 /**
+ * Very simple Object.assign-like function.
+ *
+ * @param  {object} target       - First object.
+ * @param  {object} [...objects] - Objects to merge.
+ * @return {object}
+ */
+exports.assign = function(target) {
+  target = target || {};
+
+  var objects = Array.prototype.slice.call(arguments).slice(1),
+      i,
+      k,
+      l;
+
+  for (i = 0, l = objects.length; i < l; i++) {
+    if (!objects[i])
+      continue;
+
+    for (k in objects[i])
+      target[k] = objects[i][k];
+  }
+
+  return target;
+};
+
+/**
  * Function used to validate the given settings.
  *
  * @param  {object}      settings - Settings to validate.

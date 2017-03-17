@@ -4,12 +4,15 @@
   "description": "ForceAtlas 2 layout algorithm for graphology.",
   "main": "index.js",
   "files": [
+    "build",
     "helpers.js",
     "index.js",
     "iterate.js"
   ],
   "scripts": {
+    "build": "webpack --colors --progress && webpack --colors --progress -p",
     "lint": "eslint *.js",
+    "prepublish": "npm test && npm run lint && npm run build",
     "test": "mocha test.js"
   },
   "repository": {
@@ -35,7 +38,8 @@
     "@yomguithereal/eslint-config": "^3.0.0",
     "eslint": "^3.5.0",
     "graphology": "^0.5.4",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "webpack": "^2.2.1"
   },
   "eslintConfig": {
     "extends": "@yomguithereal/eslint-config",

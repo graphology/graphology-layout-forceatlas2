@@ -34,6 +34,8 @@ var REGION_NODE = 0,
     REGION_MASS_CENTER_X = 7,
     REGION_MASS_CENTER_Y = 8;
 
+var SUBDIVISION_ATTEMPTS = 3;
+
 /**
  * Constants.
  */
@@ -101,7 +103,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
         maxX = -Infinity,
         minY = Infinity,
         maxY = -Infinity,
-        q, q2;
+        q, q2, subdivisionAttempts;
 
     // Computing min and max values
     for (n = 0; n < order; n += PPN) {
@@ -109,6 +111,17 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       maxX = Math.max(maxX, NodeMatrix[n + NODE_X]);
       minY = Math.min(minY, NodeMatrix[n + NODE_Y]);
       maxY = Math.max(maxY, NodeMatrix[n + NODE_Y]);
+    }
+
+    // squarify bounds, it's a quadtree
+    var dx = maxX - minX, dy = maxY - minY;
+    if (dx > dy) {
+      minY -= (dx - dy) / 2;
+      maxY = minY + dx;
+    }
+    else {
+      minX -= (dy - dx) / 2;
+      maxX = minX + dy;
     }
 
     // Build the Barnes Hut root region
@@ -128,6 +141,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
       // Current region, starting with root
       r = 0;
+      subdivisionAttempts = SUBDIVISION_ATTEMPTS;
 
       while (true) {
         // Are there sub-regions?
@@ -137,7 +151,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
           // There are sub-regions
 
-          // We just iterate to find a "leave" of the tree
+          // We just iterate to find a "leaf" of the tree
           // that is an empty region or a region with a single node
           // (see next case)
 
@@ -187,7 +201,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
         }
         else {
 
-          // There are no sub-regions: we are in a "leave"
+          // There are no sub-regions: we are in a "leaf"
 
           // Is there a node in this leave?
           if (RegionMatrix[r + REGION_NODE] < 0) {
@@ -331,8 +345,17 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
               // If both nodes are in the same quadrant,
               // we have to try it again on this quadrant
-              r = q;
-              continue;
+              if (subdivisionAttempts--) {
+                r = q;
+                continue; // while
+              }
+              else {
+                // we are out of precision here, and we cannot subdivide anymore
+                // but we have to break the loop anyway
+                subdivisionAttempts = SUBDIVISION_ATTEMPTS;
+                break; // while
+              }
+
             }
 
             // If both quadrants are different, we record n

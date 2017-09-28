@@ -8,6 +8,8 @@ var assert = require('assert'),
 var helpers = require('./helpers.js'),
     layout = require('./index.js');
 
+var clusters = require('graphology-generators').random.clusters;
+
 describe('graphology-layout-forceatlas2', function() {
 
   describe('helpers', function() {
@@ -152,6 +154,29 @@ describe('graphology-layout-forceatlas2', function() {
       assert.throws(function() {
         layout(new Graph(), {iterations: 5, settings: {linLogMode: 45}});
       }, /linLogMode/);
+    });
+  });
+
+  describe('Barnes-Hut optimization', function() {
+    it('should converge on a large random graph with small coordinate values', function() {
+      // Creating a random clustered graph
+      var graph = clusters(Graph, {
+        order: 1000,
+        size: 5000,
+        clusters: 5
+      });
+      graph.nodes().forEach(function(n, i) {
+        graph.setNodeAttribute(n, 'x', i % 2 ? -1 : 1);
+        graph.setNodeAttribute(n, 'y', i % 2 ? -1 : 1);
+      });
+      assert.doesNotThrow(function() {
+        layout(graph, {
+          settings: {
+            barnesHutOptimize: true
+          },
+          iterations: 10
+        });
+      }, /FATAL/);
     });
   });
 });

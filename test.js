@@ -8,7 +8,13 @@ var assert = require('assert'),
 var helpers = require('./helpers.js'),
     layout = require('./index.js');
 
-var clusters = require('graphology-generators').random.clusters;
+var seedrandom = require('seedrandom');
+
+var rng = function() {
+  return seedrandom('test');
+};
+
+var clusters = require('graphology-generators/random/clusters');
 
 describe('graphology-layout-forceatlas2', function() {
 
@@ -163,7 +169,8 @@ describe('graphology-layout-forceatlas2', function() {
       var graph = clusters(Graph, {
         order: 1000,
         size: 5000,
-        clusters: 5
+        clusters: 5,
+        rng: rng()
       });
       graph.nodes().forEach(function(n, i) {
         graph.setNodeAttribute(n, 'x', i % 2 ? -1 : 1);

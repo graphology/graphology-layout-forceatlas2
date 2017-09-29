@@ -388,17 +388,6 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       maxY = Math.max(maxY, NodeMatrix[n + NODE_Y]);
     }
 
-    // squarify bounds, it's a quadtree
-    var dx = maxX - minX, dy = maxY - minY;
-    if (dx > dy) {
-      minY -= (dx - dy) / 2;
-      maxY = minY + dx;
-    }
-    else {
-      minX -= (dy - dx) / 2;
-      maxX = minX + dy;
-    }
-
     // Build the Barnes Hut root region
     RegionMatrix[0 + REGION_NODE] = -1;
     RegionMatrix[0 + REGION_CENTER_X] = (minX + maxX) / 2;

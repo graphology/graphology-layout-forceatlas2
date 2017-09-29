@@ -38,7 +38,9 @@
     "@yomguithereal/eslint-config": "^3.0.0",
     "eslint": "^3.5.0",
     "graphology": "^0.5.4",
+    "graphology-generators": "^0.6.1",
     "mocha": "^3.0.2",
+    "seedrandom": "^2.4.3",
     "webpack": "^2.2.1"
   },
   "eslintConfig": {

@@ -35,11 +35,11 @@
   },
   "homepage": "https://github.com/graphology/graphology-forceatlas2#readme",
   "devDependencies": {
-    "@yomguithereal/eslint-config": "^3.0.0",
-    "eslint": "^3.5.0",
-    "graphology": "^0.5.4",
+    "@yomguithereal/eslint-config": "^4.0.0",
+    "eslint": "^4.7.2",
+    "graphology": "^0.10.2",
     "mocha": "^3.0.2",
-    "webpack": "^2.2.1"
+    "webpack": "^3.6.0"
   },
   "eslintConfig": {
     "extends": "@yomguithereal/eslint-config",

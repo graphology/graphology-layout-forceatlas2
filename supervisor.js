@@ -20,6 +20,7 @@ var DEFAULT_SETTINGS = require('./defaults.js');
  * @param  {object}          [settings] - Settings.
  */
 function FA2LayoutSupervisor(graph, params) {
+  params = params || {};
 
   // Validation
   if (!isGraph(graph))
@@ -37,8 +38,12 @@ function FA2LayoutSupervisor(graph, params) {
   this.graph = graph;
   this.settings = settings;
   this.matrices = null;
+  this.running = false;
+  this.killed = false;
 
-  // Binding listener
+  // Binding listeners
+  this.handleMessage = this.handleMessage.bind(this);
+
   this.worker.addEventListener('message', this.handleMessage.bind(this));
 }
 
@@ -48,9 +53,13 @@ function FA2LayoutSupervisor(graph, params) {
  * @param {object} event - Event to handle.
  */
 FA2LayoutSupervisor.prototype.handleMessage = function(event) {
+  if (!this.running)
+    return;
+
   var matrix = new Float32Array(event.data.nodes);
 
   helpers.applyLayoutChanges(this.graph, matrix);
+  this.matrices.nodes = matrix;
 
   // Looping
   this.askForIterations();
@@ -88,11 +97,55 @@ FA2LayoutSupervisor.prototype.askForIterations = function(withEdges) {
  * @return {FA2LayoutSupervisor}
  */
 FA2LayoutSupervisor.prototype.start = function() {
+  if (this.killed)
+    throw new Error('graphology-layout-forceatlas2/worker.start: layout was killed.');
+
+  if (this.running)
+    return this;
 
   // Building matrices
   this.matrices = helpers.graphToByteArrays(this.graph);
 
+  this.running = true;
   this.askForIterations(true);
 
   return this;
 };
+
+/**
+ * Method used to stop the layout.
+ *
+ * @return {FA2LayoutSupervisor}
+ */
+FA2LayoutSupervisor.prototype.stop = function() {
+  this.running = false;
+
+  return this;
+};
+
+/**
+ * Method used to kill the layout.
+ *
+ * @return {FA2LayoutSupervisor}
+ */
+FA2LayoutSupervisor.prototype.kill = function() {
+  if (this.killed)
+    return this;
+
+  this.running = false;
+  this.killed = true;
+
+  // Clearing memory
+  this.matrices = null;
+
+  // Terminating worker
+  this.worker.terminate();
+
+  // Unbinding listeners
+  // TODO: for graph listeners
+};
+
+/**
+ * Exporting.
+ */
+module.exports = FA2LayoutSupervisor;

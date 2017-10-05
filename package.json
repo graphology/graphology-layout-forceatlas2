@@ -7,7 +7,10 @@
     "build",
     "helpers.js",
     "index.js",
-    "iterate.js"
+    "iterate.js",
+    "supervisor.js",
+    "worker.js",
+    "webworker.js"
   ],
   "scripts": {
     "bench": "node bench.js",
@@ -42,7 +45,8 @@
     "graphology-generators": "^0.6.1",
     "mocha": "^3.0.2",
     "seedrandom": "^2.4.3",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "worker-loader": "^1.0.0"
   },
   "eslintConfig": {
     "extends": "@yomguithereal/eslint-config",

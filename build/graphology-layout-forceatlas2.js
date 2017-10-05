@@ -87,21 +87,7 @@ var isGraph = __webpack_require__(1),
     iterate = __webpack_require__(2),
     helpers = __webpack_require__(3);
 
-/**
- * Default Settings.
- */
-var DEFAULT_SETTINGS = {
-  linLogMode: false,
-  outboundAttractionDistribution: false,
-  adjustSizes: false,
-  edgeWeightInfluence: 0,
-  scalingRatio: 1,
-  strongGravityMode: false,
-  gravity: 1,
-  slowDown: 1,
-  barnesHutOptimize: false,
-  barnesHutTheta: 0.5
-};
+var DEFAULT_SETTINGS = __webpack_require__(4);
 
 /**
  * Asbtract function used to run a certain number of iterations.
@@ -309,6 +295,17 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       maxY = Math.max(maxY, NodeMatrix[n + NODE_Y]);
     }
 
+    // squarify bounds, it's a quadtree
+    var dx = maxX - minX, dy = maxY - minY;
+    if (dx > dy) {
+      minY -= (dx - dy) / 2;
+      maxY = minY + dx;
+    }
+    else {
+      minX -= (dy - dx) / 2;
+      maxX = minX + dy;
+    }
+
     // Build the Barnes Hut root region
     RegionMatrix[0 + REGION_NODE] = -1;
     RegionMatrix[0 + REGION_CENTER_X] = (minX + maxX) / 2;
@@ -407,7 +404,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
             // Create sub-regions
             RegionMatrix[r + REGION_FIRST_CHILD] = l * PPR;
-            w = RegionMatrix[r + REGION_SIZE] / 2;  // new size (half)
+            w = RegionMatrix[r + REGION_SIZE] / 2; // new size (half)
 
             // NOTE: we use screen coordinates
             // from Top Left to Bottom Right
@@ -618,7 +615,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
             // When this is done, we iterate. We have to look at the next sibling.
             if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-              break;  // No next sibling: we have finished the tree
+              break; // No next sibling: we have finished the tree
             r = RegionMatrix[r + REGION_NEXT_SIBLING];
             continue;
 
@@ -676,7 +673,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
           // When this is done, we iterate. We have to look at the next sibling.
           if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-            break;  // No next sibling: we have finished the tree
+            break; // No next sibling: we have finished the tree
           r = RegionMatrix[r + REGION_NEXT_SIBLING];
           continue;
         }
@@ -1193,6 +1190,28 @@ exports.collectLayoutChanges = function(graph, NodeMatrix) {
   }
 
   return positions;
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+/**
+ * Graphology ForceAtlas2 Layout Default Settings
+ * ===============================================
+ */
+module.exports = {
+  linLogMode: false,
+  outboundAttractionDistribution: false,
+  adjustSizes: false,
+  edgeWeightInfluence: 0,
+  scalingRatio: 1,
+  strongGravityMode: false,
+  gravity: 1,
+  slowDown: 1,
+  barnesHutOptimize: false,
+  barnesHutTheta: 0.5
 };
 
 

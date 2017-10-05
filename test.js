@@ -1,6 +1,6 @@
 /**
- * Graphology Utils Unit Tests
- * ============================
+ * Graphology FA2 Layout Unit Tests
+ * =================================
  */
 var assert = require('assert'),
     Graph = require('graphology');

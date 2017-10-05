@@ -10,6 +10,7 @@
     "iterate.js"
   ],
   "scripts": {
+    "bench": "node bench.js",
     "build": "webpack --colors --progress && webpack --colors --progress -p",
     "lint": "eslint *.js",
     "prepublish": "npm test && npm run lint && npm run build",

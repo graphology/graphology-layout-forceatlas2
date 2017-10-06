@@ -1,10 +1,11 @@
 {
   "name": "graphology-layout-forceatlas2",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ForceAtlas 2 layout algorithm for graphology.",
   "main": "index.js",
   "files": [
     "build",
+    "defaults.js",
     "helpers.js",
     "index.js",
     "iterate.js",

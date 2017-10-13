@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/graphology/graphology-forceatlas2.git"
+    "url": "git+https://github.com/graphology/graphology-layout-forceatlas2.git"
   },
   "keywords": [
     "graph",
@@ -36,9 +36,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/graphology/graphology-forceatlas2/issues"
+    "url": "https://github.com/graphology/graphology-layout-forceatlas2/issues"
   },
-  "homepage": "https://github.com/graphology/graphology-forceatlas2#readme",
+  "homepage": "https://github.com/graphology/graphology-layout-forceatlas2#readme",
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
     "eslint": "^4.7.2",

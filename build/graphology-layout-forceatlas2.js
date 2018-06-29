@@ -7,7 +7,7 @@
 		exports["forceAtlas2"] = factory();
 	else
 		root["forceAtlas2"] = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

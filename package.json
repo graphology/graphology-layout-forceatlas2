@@ -42,8 +42,8 @@
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
     "eslint": "^4.7.2",
-    "graphology": "^0.10.2",
-    "graphology-generators": "^0.6.1",
+    "graphology": "0.11.4",
+    "graphology-generators": "^0.9.0",
     "mocha": "^3.0.2",
     "seedrandom": "^2.4.3",
     "webpack": "^3.6.0",

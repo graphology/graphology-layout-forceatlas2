@@ -60,9 +60,28 @@ function abstractSynchronousLayout(assign, graph, params) {
 }
 
 /**
+ * Function returning sane layout settings for the given graph.
+ *
+ * @param  {Graph}  graph - Target graph.
+ * @return {object}
+ */
+function inferSettings(graph) {
+  var order = graph.order;
+
+  return {
+    barnesHutOptimize: order > 2000,
+    strongGravityMode: true,
+    gravity: 0.05,
+    scalingRatio: 10,
+    slowDown: 1 + Math.log(order)
+  };
+}
+
+/**
  * Exporting.
  */
 var synchronousLayout = abstractSynchronousLayout.bind(null, false);
 synchronousLayout.assign = abstractSynchronousLayout.bind(null, true);
+synchronousLayout.inferSettings = inferSettings;
 
 module.exports = synchronousLayout;

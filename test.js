@@ -15,6 +15,7 @@ var rng = function() {
 };
 
 var clusters = require('graphology-generators/random/clusters');
+var empty = require('graphology-generators/classic/empty');
 
 describe('graphology-layout-forceatlas2', function() {
 
@@ -160,6 +161,22 @@ describe('graphology-layout-forceatlas2', function() {
       assert.throws(function() {
         layout(new Graph(), {iterations: 5, settings: {linLogMode: 45}});
       }, /linLogMode/);
+    });
+  });
+
+  describe('#.inferSettings', function() {
+
+    it('should correctly infer settings from given graph.', function() {
+      var smallGraph = empty(Graph, 250),
+          bigGraph = empty(Graph, 5000);
+
+      var settings = layout.inferSettings(smallGraph);
+
+      assert.strictEqual(settings.barnesHutOptimize, false);
+
+      settings = layout.inferSettings(bigGraph);
+
+      assert.strictEqual(settings.barnesHutOptimize, true);
     });
   });
 

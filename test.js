@@ -25,7 +25,8 @@ describe('graphology-layout-forceatlas2', function() {
 
       it('should work as expected.', function() {
         var graph = new Graph();
-        graph.addNodesFrom({
+
+        var data = {
           John: {
             size: 4,
             x: 3,
@@ -39,7 +40,11 @@ describe('graphology-layout-forceatlas2', function() {
             x: 23,
             y: -2
           }
-        });
+        };
+
+        for (var node in data)
+          graph.addNode(node, data[node]);
+
         graph.addEdge('John', 'Martha');
         graph.addEdge('Martha', 'Ada', {weight: 3});
 
@@ -68,7 +73,8 @@ describe('graphology-layout-forceatlas2', function() {
 
       it('should work as expected.', function() {
         var graph = new Graph();
-        graph.addNodesFrom({
+
+        var data = {
           John: {
             size: 4,
             x: 3,
@@ -82,7 +88,10 @@ describe('graphology-layout-forceatlas2', function() {
             x: 23,
             y: -2
           }
-        });
+        };
+
+        for (var node in data)
+          graph.addNode(node, data[node]);
 
         var positions = helpers.collectLayoutChanges(graph, [
           4, 5, 0, 0, 0, 0, 2, 1, 4, 0,
@@ -102,7 +111,8 @@ describe('graphology-layout-forceatlas2', function() {
 
       it('should work as expecte.', function() {
         var graph = new Graph();
-        graph.addNodesFrom({
+
+        var data = {
           John: {
             x: 3,
             y: 4
@@ -115,7 +125,10 @@ describe('graphology-layout-forceatlas2', function() {
             x: 23,
             y: -2
           }
-        });
+        };
+
+        for (var node in data)
+          graph.addNode(node, data[node]);
 
         helpers.applyLayoutChanges(graph, [
           4, 5, 0, 0, 0, 0, 2, 1, 4, 0,

@@ -46,14 +46,16 @@ function FA2LayoutSupervisor(graph, params) {
 
   var alreadyRespawning = false;
 
-  this.handleAddition = () => {
+  this.handleAddition = function() {
     if (alreadyRespawning)
       return;
 
     alreadyRespawning = true;
 
     this.spawnWorker();
-    setImmediate(() => (alreadyRespawning = false));
+    setImmediate(function() {
+      alreadyRespawning = false;
+    });
   };
 
   graph.on('nodeAdded', this.handleAddition);

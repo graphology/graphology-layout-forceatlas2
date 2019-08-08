@@ -45,6 +45,7 @@ function FA2LayoutSupervisor(graph, params) {
   this.handleMessage = this.handleMessage.bind(this);
 
   var alreadyRespawning = false;
+  var self = this;
 
   this.handleAddition = function() {
     if (alreadyRespawning)
@@ -52,7 +53,7 @@ function FA2LayoutSupervisor(graph, params) {
 
     alreadyRespawning = true;
 
-    this.spawnWorker();
+    self.spawnWorker();
     setImmediate(function() {
       alreadyRespawning = false;
     });

@@ -34,7 +34,7 @@ function FA2LayoutSupervisor(graph, params) {
     throw new Error('graphology-layout-forceatlas2/worker: ' + validationError.message);
 
   // Properties
-  this.worker = new Worker();
+  this.worker = null;
   this.graph = graph;
   this.settings = settings;
   this.matrices = null;
@@ -44,8 +44,40 @@ function FA2LayoutSupervisor(graph, params) {
   // Binding listeners
   this.handleMessage = this.handleMessage.bind(this);
 
-  this.worker.addEventListener('message', this.handleMessage.bind(this));
+  var alreadyRespawning = false;
+
+  this.handleAddition = () => {
+    if (alreadyRespawning)
+      return;
+
+    alreadyRespawning = true;
+
+    this.spawnWorker();
+    setImmediate(() => (alreadyRespawning = false));
+  };
+
+  graph.on('nodeAdded', this.handleAddition);
+  graph.on('edgeAdded', this.handleAddition);
+
+  // Spawning worker
+  this.spawnWorker();
 }
+
+/**
+ * Internal method used to spawn the web worker.
+ */
+FA2LayoutSupervisor.prototype.spawnWorker = function() {
+  if (this.worker)
+    this.worker.terminate();
+
+  this.worker = new Worker();
+  this.worker.addEventListener('message', this.handleMessage);
+
+  if (this.running) {
+    this.running = false;
+    this.start();
+  }
+};
 
 /**
  * Internal method used to handle the worker's messages.
@@ -142,7 +174,8 @@ FA2LayoutSupervisor.prototype.kill = function() {
   this.worker.terminate();
 
   // Unbinding listeners
-  // TODO: for graph listeners
+  this.graph.removeListener('nodeAdded', this.handleAddition);
+  this.graph.removeListener('edgeAdded', this.handleAddition);
 };
 
 /**

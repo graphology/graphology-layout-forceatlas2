@@ -189,7 +189,7 @@ module.exports = function isGraph(value) {
     value !== null &&
     typeof value === 'object' &&
     typeof value.addUndirectedEdgeWithKey === 'function' &&
-    typeof value.dropNodes === 'function' &&
+    typeof value.dropNode === 'function' &&
     typeof value.multi === 'boolean'
   );
 };

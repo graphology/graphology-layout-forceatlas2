@@ -118,8 +118,8 @@ exports.graphToByteArrays = function(graph) {
     index[nodes[i]] = j;
 
     // Populating byte array
-    NodeMatrix[j] = graph.getNodeAttribute(nodes[i], 'x') || 0;
-    NodeMatrix[j + 1] = graph.getNodeAttribute(nodes[i], 'y') || 0;
+    NodeMatrix[j] = graph.getNodeAttribute(nodes[i], 'x');
+    NodeMatrix[j + 1] = graph.getNodeAttribute(nodes[i], 'y');
     NodeMatrix[j + 2] = 0;
     NodeMatrix[j + 3] = 0;
     NodeMatrix[j + 4] = 0;

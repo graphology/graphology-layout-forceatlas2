@@ -16,10 +16,15 @@ npm install graphology-layout-forceatlas2
 
 ## Usage
 
+* [Pre-requisite](#pre-requisite)
 * [Settings](#settings)
 * [Synchronous layout](#synchronous-layout)
 * [Webworker](#webworker)
 * [#.inferSettings](#infersettings)
+
+### Pre-requisite
+
+Two attributes called `x` and `y` must be defined for all the graph nodes beforehand. [Graphology-layout](https://github.com/graphology/graphology-layout) can be used to initialize these attributes.
 
 ### Settings
 

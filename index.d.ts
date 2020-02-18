@@ -30,6 +30,6 @@ interface IForceAtlas2Layout {
   inferSettings(graph: Graph): ForceAtlas2Settings;
 }
 
-const forceAtlas2: IForceAtlas2Layout;
+declare const forceAtlas2: IForceAtlas2Layout;
 
 export default forceAtlas2;

@@ -4,6 +4,7 @@
   "description": "ForceAtlas 2 layout algorithm for graphology.",
   "main": "index.js",
   "files": [
+    "*.d.ts",
     "build",
     "defaults.js",
     "helpers.js",

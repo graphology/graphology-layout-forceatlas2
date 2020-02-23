@@ -89,7 +89,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       outboundAttCompensation += NodeMatrix[n + NODE_MASS];
     }
 
-    outboundAttCompensation /= order;
+    outboundAttCompensation /= (order / PPN);
   }
 
 

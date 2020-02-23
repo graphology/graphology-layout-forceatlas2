@@ -723,7 +723,9 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
   var force,
       swinging,
       traction,
-      nodespeed;
+      nodespeed,
+      newX,
+      newY;
 
   // MATH: sqrt and square distances
   if (options.adjustSizes) {
@@ -761,12 +763,13 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           0.1 * Math.log(1 + traction) / (1 + Math.sqrt(swinging));
 
         // Updating node's positon
-        NodeMatrix[n + NODE_X] =
-          NodeMatrix[n + NODE_X] + NodeMatrix[n + NODE_DX] *
+        newX = NodeMatrix[n + NODE_X] + NodeMatrix[n + NODE_DX] *
           (nodespeed / options.slowDown);
-        NodeMatrix[n + NODE_Y] =
-          NodeMatrix[n + NODE_Y] + NodeMatrix[n + NODE_DY] *
+        NodeMatrix[n + NODE_X] = newX;
+
+        newY = NodeMatrix[n + NODE_Y] + NodeMatrix[n + NODE_DY] *
           (nodespeed / options.slowDown);
+        NodeMatrix[n + NODE_Y] = newY;
       }
     }
   }
@@ -803,12 +806,13 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           ));
 
         // Updating node's positon
-        NodeMatrix[n + NODE_X] =
-          NodeMatrix[n + NODE_X] + NodeMatrix[n + NODE_DX] *
+        newX = NodeMatrix[n + NODE_X] + NodeMatrix[n + NODE_DX] *
           (nodespeed / options.slowDown);
-        NodeMatrix[n + NODE_Y] =
-          NodeMatrix[n + NODE_Y] + NodeMatrix[n + NODE_DY] *
+        NodeMatrix[n + NODE_X] = newX;
+
+        newY = NodeMatrix[n + NODE_Y] + NodeMatrix[n + NODE_DY] *
           (nodespeed / options.slowDown);
+        NodeMatrix[n + NODE_Y] = newY;
       }
     }
   }

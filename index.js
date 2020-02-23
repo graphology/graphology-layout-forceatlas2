@@ -52,7 +52,7 @@ function abstractSynchronousLayout(assign, graph, params) {
 
   // Applying
   if (assign) {
-    helpers.applyLayoutChanges(graph, matrices.nodes);
+    helpers.assignLayoutChanges(graph, matrices.nodes);
     return;
   }
 

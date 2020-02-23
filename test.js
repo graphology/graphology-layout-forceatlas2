@@ -107,7 +107,7 @@ describe('graphology-layout-forceatlas2', function() {
       });
     });
 
-    describe('#.applyLayoutChanges', function() {
+    describe('#.assignLayoutChanges', function() {
 
       it('should work as expecte.', function() {
         var graph = new Graph();
@@ -130,7 +130,7 @@ describe('graphology-layout-forceatlas2', function() {
         for (var node in data)
           graph.addNode(node, data[node]);
 
-        helpers.applyLayoutChanges(graph, [
+        helpers.assignLayoutChanges(graph, [
           4, 5, 0, 0, 0, 0, 2, 1, 4, 0,
           11, 6, 0, 0, 0, 0, 3, 1, 1, 0,
           24, -1, 0, 0, 0, 0, 2, 1, 1, 0

@@ -93,7 +93,7 @@ FA2LayoutSupervisor.prototype.handleMessage = function(event) {
 
   var matrix = new Float32Array(event.data.nodes);
 
-  helpers.applyLayoutChanges(this.graph, matrix);
+  helpers.assignLayoutChanges(this.graph, matrix);
   this.matrices.nodes = matrix;
 
   // Looping

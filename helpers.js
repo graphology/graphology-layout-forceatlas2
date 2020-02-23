@@ -153,7 +153,7 @@ exports.graphToByteArrays = function(graph) {
  * @param {Graph}        graph      - Target graph.
  * @param {Float32Array} NodeMatrix - Node matrix.
  */
-exports.applyLayoutChanges = function(graph, NodeMatrix) {
+exports.assignLayoutChanges = function(graph, NodeMatrix) {
   var nodes = graph.nodes();
 
   for (var i = 0, j = 0, l = NodeMatrix.length; i < l; i += PPN) {

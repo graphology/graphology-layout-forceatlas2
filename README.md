@@ -22,9 +22,11 @@ npm install graphology-layout-forceatlas2
 * [Webworker](#webworker)
 * [#.inferSettings](#infersettings)
 
-### Pre-requisite
+### Pre-requisites
 
 Each node's starting position must be set before running ForceAtlas 2 layout. Two attributes called `x` and `y` must therefore be defined for all the graph nodes. [graphology-layout](https://github.com/graphology/graphology-layout) can be used to initialize these attributes to a [random](https://github.com/graphology/graphology-layout#random) or [circular](https://github.com/graphology/graphology-layout#circular) layout, if needed.
+
+Note also that the algorithm has an edge-case where the layout cannot be computed if all of your nodes starts with `x=0` and `y=0`.
 
 ### Settings
 

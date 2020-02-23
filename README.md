@@ -86,6 +86,8 @@ layout.stop();
 layout.kill();
 ```
 
+**WARNING!**: if you are using [`webpack`](https://webpack.js.org/) to bundle your code, avoid the `cheap-eval`-like options for the [`devtool`](https://webpack.js.org/configuration/devtool/) setting. Some users noticed that it interacts in mysterious ways with the library's code and cause performance to drop dramatically when using the worker.
+
 ### #.inferSettings
 
 If you don't know how to tune the layout's settings and want to infer them from your graph, you can use the `#.inferSettings` method:

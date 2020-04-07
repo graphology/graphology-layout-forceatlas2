@@ -43,9 +43,9 @@
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
     "eslint": "^6.8.0",
-    "graphology": "0.15.2",
+    "graphology": "0.17.1",
     "graphology-generators": "^0.10.1",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.1",
     "seedrandom": "^3.0.5",
     "webpack": "^3.6.0",
     "worker-loader": "^1.0.0"
@@ -57,7 +57,7 @@
     }
   },
   "dependencies": {
-    "graphology-types": "^0.15.3",
-    "graphology-utils": "^1.6.0"
+    "graphology-types": "^0.16.0",
+    "graphology-utils": "^1.7.0"
   }
 }

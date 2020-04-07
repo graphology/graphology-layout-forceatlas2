@@ -56,10 +56,12 @@ var MAX_FORCE = 10;
 module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
   // Initializing variables
-  var l, r, n, n1, n2, rn, e, w, g;
+  var l, r, n, n1, n2, rn, e, w, g, s;
 
   var order = NodeMatrix.length,
       size = EdgeMatrix.length;
+
+  var thetaSquared = options.barnesHutTheta * options.barnesHutTheta;
 
   var outboundAttCompensation,
       coefficient,
@@ -389,12 +391,14 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           // The region has sub-regions
 
           // We run the Barnes Hut test to see if we are at the right distance
-          distance = Math.sqrt(
+          distance = (
             (Math.pow(NodeMatrix[n + NODE_X] - RegionMatrix[r + REGION_MASS_CENTER_X], 2)) +
             (Math.pow(NodeMatrix[n + NODE_Y] - RegionMatrix[r + REGION_MASS_CENTER_Y], 2))
           );
 
-          if (2 * RegionMatrix[r + REGION_SIZE] / distance < options.barnesHutTheta) {
+          s = RegionMatrix[r + REGION_SIZE];
+
+          if ((4 * s * s) / distance < thetaSquared) {
 
             // We treat the region as a single body, and we repulse
 
@@ -406,14 +410,14 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance / distance;
+                  RegionMatrix[r + REGION_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
               }
               else if (distance < 0) {
                 factor = -coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance;
+                  RegionMatrix[r + REGION_MASS] / Math.sqrt(distance);
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -424,7 +428,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance / distance;
+                  RegionMatrix[r + REGION_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -456,21 +460,21 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
             xDist = NodeMatrix[n + NODE_X] - NodeMatrix[rn + NODE_X];
             yDist = NodeMatrix[n + NODE_Y] - NodeMatrix[rn + NODE_Y];
 
-            distance = Math.sqrt(xDist * xDist + yDist * yDist);
+            distance = xDist * xDist + yDist * yDist;
 
             if (options.adjustSizes) {
 
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[rn + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
               }
               else if (distance < 0) {
                 factor = -coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[rn + NODE_MASS] / distance;
+                  NodeMatrix[rn + NODE_MASS] / Math.sqrt(distance);
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -481,7 +485,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[rn + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;

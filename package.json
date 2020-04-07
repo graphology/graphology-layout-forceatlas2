@@ -45,6 +45,7 @@
     "eslint": "^6.8.0",
     "graphology": "0.17.1",
     "graphology-generators": "^0.10.1",
+    "graphology-layout": "^0.2.0",
     "mocha": "^7.1.1",
     "seedrandom": "^3.0.5",
     "webpack": "^3.6.0",

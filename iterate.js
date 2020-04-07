@@ -432,11 +432,11 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
             }
 
             // When this is done, we iterate. We have to look at the next sibling.
-            if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-              break; // No next sibling: we have finished the tree
             r = RegionMatrix[r + REGION_NEXT_SIBLING];
-            continue;
+            if (r < 0)
+              break; // No next sibling: we have finished the tree
 
+            continue;
           }
           else {
 
@@ -490,9 +490,11 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           }
 
           // When this is done, we iterate. We have to look at the next sibling.
-          if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-            break; // No next sibling: we have finished the tree
           r = RegionMatrix[r + REGION_NEXT_SIBLING];
+
+          if (r < 0)
+            break; // No next sibling: we have finished the tree
+
           continue;
         }
       }

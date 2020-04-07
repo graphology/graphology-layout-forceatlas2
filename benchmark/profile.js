@@ -2,7 +2,11 @@ var Graph = require('graphology');
 var generateClusters = require('graphology-generators/random/clusters');
 var layout = require('../');
 
-var graph = generateClusters(Graph.UndirectedGraph, {order: 5000, size: 10000, clusters: 5});
+var ORDER = 5000;
+var SIZE = 10000;
+var CLUSTERS = 10;
+
+var graph = generateClusters(Graph.UndirectedGraph, {order: ORDER, size: SIZE, clusters: CLUSTERS});
 
 console.time('layout');
 console.profile('layout');

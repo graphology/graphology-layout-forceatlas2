@@ -61,6 +61,8 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
   var order = NodeMatrix.length,
       size = EdgeMatrix.length;
 
+  var adjustSizes = options.adjustSizes;
+
   var thetaSquared = options.barnesHutTheta * options.barnesHutTheta;
 
   var outboundAttCompensation,
@@ -405,7 +407,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
             xDist = NodeMatrix[n + NODE_X] - RegionMatrix[r + REGION_MASS_CENTER_X];
             yDist = NodeMatrix[n + NODE_Y] - RegionMatrix[r + REGION_MASS_CENTER_Y];
 
-            if (options.adjustSizes) {
+            if (adjustSizes === true) {
 
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
@@ -462,7 +464,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
             distance = xDist * xDist + yDist * yDist;
 
-            if (options.adjustSizes) {
+            if (adjustSizes === true) {
 
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
@@ -516,7 +518,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
         xDist = NodeMatrix[n1 + NODE_X] - NodeMatrix[n2 + NODE_X];
         yDist = NodeMatrix[n1 + NODE_Y] - NodeMatrix[n2 + NODE_Y];
 
-        if (options.adjustSizes) {
+        if (adjustSizes === true) {
 
           //-- Anticollision Linear Repulsion
           distance = Math.sqrt(xDist * xDist + yDist * yDist) -
@@ -627,7 +629,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
     yDist = NodeMatrix[n1 + NODE_Y] - NodeMatrix[n2 + NODE_Y];
 
     // Applying attraction to nodes
-    if (options.adjustSizes) {
+    if (adjustSizes === true) {
 
       distance = Math.sqrt(
         (Math.pow(xDist, 2) + Math.pow(yDist, 2)) -
@@ -735,7 +737,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       newY;
 
   // MATH: sqrt and square distances
-  if (options.adjustSizes) {
+  if (adjustSizes === true) {
 
     for (n = 0; n < order; n += PPN) {
       if (!NodeMatrix[n + NODE_FIXED]) {

@@ -257,10 +257,14 @@ var MAX_FORCE = 10;
 module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
   // Initializing variables
-  var l, r, n, n1, n2, e, w, g;
+  var l, r, n, n1, n2, rn, e, w, g, s;
 
   var order = NodeMatrix.length,
       size = EdgeMatrix.length;
+
+  var adjustSizes = options.adjustSizes;
+
+  var thetaSquared = options.barnesHutTheta * options.barnesHutTheta;
 
   var outboundAttCompensation,
       coefficient,
@@ -590,31 +594,33 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           // The region has sub-regions
 
           // We run the Barnes Hut test to see if we are at the right distance
-          distance = Math.sqrt(
+          distance = (
             (Math.pow(NodeMatrix[n + NODE_X] - RegionMatrix[r + REGION_MASS_CENTER_X], 2)) +
             (Math.pow(NodeMatrix[n + NODE_Y] - RegionMatrix[r + REGION_MASS_CENTER_Y], 2))
           );
 
-          if (2 * RegionMatrix[r + REGION_SIZE] / distance < options.barnesHutTheta) {
+          s = RegionMatrix[r + REGION_SIZE];
+
+          if ((4 * s * s) / distance < thetaSquared) {
 
             // We treat the region as a single body, and we repulse
 
             xDist = NodeMatrix[n + NODE_X] - RegionMatrix[r + REGION_MASS_CENTER_X];
             yDist = NodeMatrix[n + NODE_Y] - RegionMatrix[r + REGION_MASS_CENTER_Y];
 
-            if (options.adjustSizes) {
+            if (adjustSizes === true) {
 
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance / distance;
+                  RegionMatrix[r + REGION_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
               }
               else if (distance < 0) {
                 factor = -coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance;
+                  RegionMatrix[r + REGION_MASS] / Math.sqrt(distance);
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -625,7 +631,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  RegionMatrix[r + REGION_MASS] / distance / distance;
+                  RegionMatrix[r + REGION_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -633,11 +639,11 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
             }
 
             // When this is done, we iterate. We have to look at the next sibling.
-            if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-              break; // No next sibling: we have finished the tree
             r = RegionMatrix[r + REGION_NEXT_SIBLING];
-            continue;
+            if (r < 0)
+              break; // No next sibling: we have finished the tree
 
+            continue;
           }
           else {
 
@@ -651,26 +657,27 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
           // The region has no sub-region
           // If there is a node r[0] and it is not n, then repulse
+          rn = RegionMatrix[r + REGION_NODE];
 
-          if (RegionMatrix[r + REGION_NODE] >= 0 && RegionMatrix[r + REGION_NODE] !== n) {
-            xDist = NodeMatrix[n + NODE_X] - NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_X];
-            yDist = NodeMatrix[n + NODE_Y] - NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_Y];
+          if (rn >= 0 && rn !== n) {
+            xDist = NodeMatrix[n + NODE_X] - NodeMatrix[rn + NODE_X];
+            yDist = NodeMatrix[n + NODE_Y] - NodeMatrix[rn + NODE_Y];
 
-            distance = Math.sqrt(xDist * xDist + yDist * yDist);
+            distance = xDist * xDist + yDist * yDist;
 
-            if (options.adjustSizes) {
+            if (adjustSizes === true) {
 
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
               }
               else if (distance < 0) {
                 factor = -coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance;
+                  NodeMatrix[rn + NODE_MASS] / Math.sqrt(distance);
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -681,7 +688,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -691,9 +698,11 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
           }
 
           // When this is done, we iterate. We have to look at the next sibling.
-          if (RegionMatrix[r + REGION_NEXT_SIBLING] < 0)
-            break; // No next sibling: we have finished the tree
           r = RegionMatrix[r + REGION_NEXT_SIBLING];
+
+          if (r < 0)
+            break; // No next sibling: we have finished the tree
+
           continue;
         }
       }
@@ -710,7 +719,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
         xDist = NodeMatrix[n1 + NODE_X] - NodeMatrix[n2 + NODE_X];
         yDist = NodeMatrix[n1 + NODE_Y] - NodeMatrix[n2 + NODE_Y];
 
-        if (options.adjustSizes) {
+        if (adjustSizes === true) {
 
           //-- Anticollision Linear Repulsion
           distance = Math.sqrt(xDist * xDist + yDist * yDist) -
@@ -821,7 +830,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
     yDist = NodeMatrix[n1 + NODE_Y] - NodeMatrix[n2 + NODE_Y];
 
     // Applying attraction to nodes
-    if (options.adjustSizes) {
+    if (adjustSizes === true) {
 
       distance = Math.sqrt(
         (Math.pow(xDist, 2) + Math.pow(yDist, 2)) -
@@ -929,7 +938,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
       newY;
 
   // MATH: sqrt and square distances
-  if (options.adjustSizes) {
+  if (adjustSizes === true) {
 
     for (n = 0; n < order; n += PPN) {
       if (!NodeMatrix[n + NODE_FIXED]) {

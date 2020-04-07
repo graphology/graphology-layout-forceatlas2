@@ -56,7 +56,7 @@ var MAX_FORCE = 10;
 module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
   // Initializing variables
-  var l, r, n, n1, n2, e, w, g;
+  var l, r, n, n1, n2, rn, e, w, g;
 
   var order = NodeMatrix.length,
       size = EdgeMatrix.length;
@@ -450,10 +450,11 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
 
           // The region has no sub-region
           // If there is a node r[0] and it is not n, then repulse
+          rn = RegionMatrix[r + REGION_NODE];
 
-          if (RegionMatrix[r + REGION_NODE] >= 0 && RegionMatrix[r + REGION_NODE] !== n) {
-            xDist = NodeMatrix[n + NODE_X] - NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_X];
-            yDist = NodeMatrix[n + NODE_Y] - NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_Y];
+          if (rn >= 0 && rn !== n) {
+            xDist = NodeMatrix[n + NODE_X] - NodeMatrix[rn + NODE_X];
+            yDist = NodeMatrix[n + NODE_Y] - NodeMatrix[rn + NODE_Y];
 
             distance = Math.sqrt(xDist * xDist + yDist * yDist);
 
@@ -462,14 +463,14 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Anti-collision Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
               }
               else if (distance < 0) {
                 factor = -coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;
@@ -480,7 +481,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
               //-- Linear Repulsion
               if (distance > 0) {
                 factor = coefficient * NodeMatrix[n + NODE_MASS] *
-                  NodeMatrix[RegionMatrix[r + REGION_NODE] + NODE_MASS] / distance / distance;
+                  NodeMatrix[rn + NODE_MASS] / distance / distance;
 
                 NodeMatrix[n + NODE_DX] += xDist * factor;
                 NodeMatrix[n + NODE_DY] += yDist * factor;

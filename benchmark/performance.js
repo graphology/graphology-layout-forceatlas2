@@ -6,7 +6,7 @@
  * Simplistic benchmark to assess some performance improvements.
  */
 var Graph = require('graphology'),
-    layout = require('./index.js'),
+    layout = require('../index.js'),
     randomClusters = require('graphology-generators/random/clusters'),
     seedrandom = require('seedrandom');
 

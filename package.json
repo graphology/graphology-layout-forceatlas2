@@ -42,11 +42,11 @@
   "homepage": "https://github.com/graphology/graphology-layout-forceatlas2#readme",
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.3.0",
     "graphology": "0.17.1",
     "graphology-generators": "^0.10.1",
-    "graphology-layout": "^0.2.0",
-    "mocha": "^7.1.1",
+    "graphology-layout": "^0.3.1",
+    "mocha": "^8.0.1",
     "seedrandom": "^3.0.5",
     "webpack": "^3.6.0",
     "worker-loader": "^1.0.0"

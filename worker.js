@@ -5,7 +5,7 @@
  * Supervisor class able to spawn a web worker to run the FA2 layout in a
  * separate thread not to block UI with heavy synchronous computations.
  */
-var Worker = require('worker-loader?inline&fallback=false!./webworker.js'),
+var workerFunction = require('./webworker.js'),
     isGraph = require('graphology-utils/is-graph'),
     helpers = require('./helpers.js');
 
@@ -73,7 +73,7 @@ FA2LayoutSupervisor.prototype.spawnWorker = function() {
   if (this.worker)
     this.worker.terminate();
 
-  this.worker = new Worker();
+  this.worker = helpers.createWorker(workerFunction);
   this.worker.addEventListener('message', this.handleMessage);
 
   if (this.running) {

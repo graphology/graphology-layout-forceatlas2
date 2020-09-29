@@ -2,4 +2,4 @@ experiments
 node_modules
 *.log
 .DS_Store
-worker.js
+webworker.js

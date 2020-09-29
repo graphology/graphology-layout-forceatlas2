@@ -185,3 +185,19 @@ exports.collectLayoutChanges = function(graph, NodeMatrix) {
 
   return positions;
 };
+
+/**
+ * Function returning a web worker from the given function.
+ *
+ * @param  {function}  fn - Function for the worker.
+ * @return {DOMString}
+ */
+exports.createWorker = function createWorker(fn) {
+  var xURL = window.URL || window.webkitURL;
+  var code = fn.toString();
+  var objectUrl = xURL.createObjectURL(new Blob(['(' + code + ').call(this);'], {type: 'text/javascript'}));
+  var worker = new Worker(objectUrl);
+  xURL.revokeObjectURL(objectUrl);
+
+  return worker;
+};

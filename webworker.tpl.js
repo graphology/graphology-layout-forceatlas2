@@ -8,12 +8,13 @@ module.exports = function worker() {
   var NODES,
       EDGES;
 
-  var mod = {};
-  (function(mod) {
-    <%- iterate %>
-  }).call(null, mod);
+  var moduleShim = {};
 
-  var iterate = mod.exports;
+  (function() {
+    // <%= iterate %>
+  })();
+
+  var iterate = moduleShim.exports;
 
   self.addEventListener('message', function(event) {
     var data = event.data;

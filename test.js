@@ -109,7 +109,7 @@ describe('graphology-layout-forceatlas2', function() {
 
     describe('#.assignLayoutChanges', function() {
 
-      it('should work as expecte.', function() {
+      it('should work as expected.', function() {
         var graph = new Graph();
 
         var data = {

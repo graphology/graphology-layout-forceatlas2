@@ -41,8 +41,8 @@
   "homepage": "https://github.com/graphology/graphology-layout-forceatlas2#readme",
   "devDependencies": {
     "@yomguithereal/eslint-config": "^4.0.0",
-    "eslint": "^7.3.0",
-    "graphology": "0.17.1",
+    "eslint": "^7.11.0",
+    "graphology": "0.18.0",
     "graphology-generators": "^0.10.1",
     "graphology-layout": "^0.3.1",
     "mocha": "^8.0.1",
@@ -56,7 +56,7 @@
     }
   },
   "dependencies": {
-    "graphology-types": "^0.17.0",
+    "graphology-types": "^0.18.0",
     "graphology-utils": "^1.7.0"
   }
 }

@@ -740,7 +740,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
   if (adjustSizes === true) {
 
     for (n = 0; n < order; n += PPN) {
-      if (!NodeMatrix[n + NODE_FIXED]) {
+      if (NodeMatrix[n + NODE_FIXED] !== 1) {
         force = Math.sqrt(
           Math.pow(NodeMatrix[n + NODE_DX], 2) +
           Math.pow(NodeMatrix[n + NODE_DY], 2)
@@ -785,7 +785,7 @@ module.exports = function iterate(options, NodeMatrix, EdgeMatrix) {
   else {
 
     for (n = 0; n < order; n += PPN) {
-      if (!NodeMatrix[n + NODE_FIXED]) {
+      if (NodeMatrix[n + NODE_FIXED] !== 1) {
 
         swinging = NodeMatrix[n + NODE_MASS] *
           Math.sqrt(

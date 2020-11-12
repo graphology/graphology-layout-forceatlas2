@@ -153,13 +153,16 @@ exports.graphToByteArrays = function(graph) {
  * @param {Float32Array} NodeMatrix - Node matrix.
  */
 exports.assignLayoutChanges = function(graph, NodeMatrix) {
-  var nodes = graph.nodes();
+  var i = 0;
 
-  for (var i = 0, j = 0, l = NodeMatrix.length; i < l; i += PPN) {
-    graph.setNodeAttribute(nodes[j], 'x', NodeMatrix[i]);
-    graph.setNodeAttribute(nodes[j], 'y', NodeMatrix[i + 1]);
-    j++;
-  }
+  graph.updateEachNodeAttributes(function(node, attr) {
+    attr.x = NodeMatrix[i];
+    attr.y = NodeMatrix[i + 1];
+
+    i += PPN;
+
+    return attr;
+  }, {attributes: ['x', 'y']});
 };
 
 /**
@@ -171,7 +174,7 @@ exports.assignLayoutChanges = function(graph, NodeMatrix) {
  */
 exports.collectLayoutChanges = function(graph, NodeMatrix) {
   var nodes = graph.nodes(),
-      positions = Object.create(null);
+      positions = {};
 
   for (var i = 0, j = 0, l = NodeMatrix.length; i < l; i += PPN) {
     positions[nodes[j]] = {

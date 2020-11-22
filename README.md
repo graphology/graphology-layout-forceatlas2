@@ -97,6 +97,9 @@ If you don't know how to tune the layout's settings and want to infer them from 
 ```js
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 
-const saneSettings = forceAtlas2.inferSettings(graph);
-const positions = forceAtlas2(graph, {iterations: 50, settings: saneSettings});
+const sensibleSettings = forceAtlas2.inferSettings(graph);
+const positions = forceAtlas2(graph, {iterations: 50, settings: sensibleSettings});
+
+// Alternatively using the graph's order instead of a graph instance
+const sensibleSettings = forceAtlas2.inferSettings(500);
 ```

@@ -27,6 +27,7 @@ interface IForceAtlas2Layout {
   assign(graph: Graph, iterations: number): void;
   assign(graph: Graph, options: ForceAtlas2LayoutOptions): void;
 
+  inferSettings(order: number): ForceAtlas2Settings;
   inferSettings(graph: Graph): ForceAtlas2Settings;
 }
 

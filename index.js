@@ -62,11 +62,11 @@ function abstractSynchronousLayout(assign, graph, params) {
 /**
  * Function returning sane layout settings for the given graph.
  *
- * @param  {Graph}  graph - Target graph.
+ * @param  {Graph|number} graph - Target graph or graph order.
  * @return {object}
  */
 function inferSettings(graph) {
-  var order = graph.order;
+  var order = typeof graph === 'number' ? graph : graph.order;
 
   return {
     barnesHutOptimize: order > 2000,

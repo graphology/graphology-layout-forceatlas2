@@ -191,6 +191,16 @@ describe('graphology-layout-forceatlas2', function() {
 
       assert.strictEqual(settings.barnesHutOptimize, true);
     });
+
+    it('should work if given the order of the graph.', function() {
+      var settings = layout.inferSettings(250);
+
+      assert.strictEqual(settings.barnesHutOptimize, false);
+
+      settings = layout.inferSettings(5000);
+
+      assert.strictEqual(settings.barnesHutOptimize, true);
+    });
   });
 
   describe('Barnes-Hut optimization', function() {

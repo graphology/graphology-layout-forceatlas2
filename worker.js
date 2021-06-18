@@ -44,23 +44,26 @@ function FA2LayoutSupervisor(graph, params) {
   // Binding listeners
   this.handleMessage = this.handleMessage.bind(this);
 
-  var alreadyRespawning = false;
+  var alreadyRespawning = undefined;
   var self = this;
 
-  this.handleAddition = function() {
+  this.handleGraphUpdate = function() {
+    if (self.worker)
+      self.worker.terminate();
+
     if (alreadyRespawning)
-      return;
+      clearImmediate(alreadyRespawning);
 
-    alreadyRespawning = true;
-
-    self.spawnWorker();
-    setImmediate(function() {
-      alreadyRespawning = false;
+    alreadyRespawning = setImmediate(function() {
+      alreadyRespawning = undefined;
+      self.spawnWorker();
     });
   };
 
-  graph.on('nodeAdded', this.handleAddition);
-  graph.on('edgeAdded', this.handleAddition);
+  graph.on('nodeAdded', this.handleGraphUpdate);
+  graph.on('edgeAdded', this.handleGraphUpdate);
+  graph.on('nodeDropped', this.handleGraphUpdate);
+  graph.on('edgeDropped', this.handleGraphUpdate);
 
   // Spawning worker
   this.spawnWorker();
@@ -177,8 +180,10 @@ FA2LayoutSupervisor.prototype.kill = function() {
   this.worker.terminate();
 
   // Unbinding listeners
-  this.graph.removeListener('nodeAdded', this.handleAddition);
-  this.graph.removeListener('edgeAdded', this.handleAddition);
+  this.graph.removeListener('nodeAdded', this.handleGraphUpdate);
+  this.graph.removeListener('edgeAdded', this.handleGraphUpdate);
+  this.graph.removeListener('nodeDropped', this.handleGraphUpdate);
+  this.graph.removeListener('edgeDropped', this.handleGraphUpdate);
 };
 
 /**

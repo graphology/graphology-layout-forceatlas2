@@ -17,6 +17,7 @@
     "clean": "rimraf webworker.js",
     "lint": "eslint '*.js'",
     "prepublish": "npm run clean && npm test && npm run lint && npm run template",
+    "prepublishOnly": "npm run prepublish",
     "template": "node ./scripts/template-webworker.js > webworker.js",
     "test": "mocha test.js"
   },

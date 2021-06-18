@@ -44,20 +44,20 @@ function FA2LayoutSupervisor(graph, params) {
   // Binding listeners
   this.handleMessage = this.handleMessage.bind(this);
 
-  var alreadyRespawning = undefined;
+  var respawnFrame = undefined;
   var self = this;
 
   this.handleGraphUpdate = function() {
     if (self.worker)
       self.worker.terminate();
 
-    if (alreadyRespawning)
-      clearImmediate(alreadyRespawning);
+    if (respawnFrame)
+      clearTimeout(respawnFrame);
 
-    alreadyRespawning = setImmediate(function() {
-      alreadyRespawning = undefined;
+    respawnFrame = setTimeout(function() {
+      respawnFrame = undefined;
       self.spawnWorker();
-    });
+    }, 0);
   };
 
   graph.on('nodeAdded', this.handleGraphUpdate);
